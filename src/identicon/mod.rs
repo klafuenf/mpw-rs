@@ -17,7 +17,7 @@ extern crate ring;
  * along with Master Password. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use self::ring::{digest, hmac};
+use self::ring::hmac;
 
 pub fn generate(full_name: &str, master_password: &str) -> String {
     let left_arm = vec!['╔', '╚', '╰', '═'];
@@ -30,7 +30,7 @@ pub fn generate(full_name: &str, master_password: &str) -> String {
                          '♨', '♩', '♪', '♫', '⚐', '⚑', '⚔', '⚖', '⚙', '⚠',
                          '⌘', '⏎', '✄', '✆', '✈', '✉', '✌'];
 
-    let signing_key = hmac::SigningKey::new(&digest::SHA256, master_password.as_bytes());
+    let signing_key = hmac::Key::new(hmac::HMAC_SHA256, master_password.as_bytes());
     let output = hmac::sign(&signing_key, full_name.as_bytes());
     let identicon_seed = output.as_ref();
 

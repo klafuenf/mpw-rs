@@ -19,7 +19,7 @@ extern crate ring;
  */
 
 use std::time;
-use self::ring::{digest, hmac};
+use self::ring::hmac;
 use self::bcrypt::hash;
 use common::SiteType;
 use common::SiteVariant;
@@ -56,7 +56,7 @@ pub fn mpw_bench() {
              "hmac-sha-256");
     let start = time::Instant::now();
     for _ in 1..iterations {
-        hmac::sign(&hmac::SigningKey::new(&digest::SHA256, &master_key),
+        hmac::sign(&hmac::Key::new(hmac::HMAC_SHA256, &master_key),
                    "".as_bytes());
     }
     let hmac_sha256_speed = calc_speed(start.elapsed(), iterations);

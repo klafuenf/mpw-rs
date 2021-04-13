@@ -1,4 +1,3 @@
-extern crate ring_pwhash;
 extern crate argon2rs;
 
 /*
@@ -18,7 +17,6 @@ extern crate argon2rs;
  * along with Master Password. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use self::ring_pwhash::scrypt::{scrypt, ScryptParams};
 use self::argon2rs::{Variant, Argon2};
 
 pub const KEY_LENGTH: usize = 64_usize;
@@ -147,10 +145,13 @@ pub fn u32_to_bytes(u: u32) -> [u8; 4] {
 }
 
 pub fn derive_key(password: &[u8], salt: &[u8]) -> [u8; KEY_LENGTH] {
-    let scrypt_params = ScryptParams::new(32768_f64.log(2.0) as u8, 8_u32, 2_u32);
     let mut digest: [u8; KEY_LENGTH] = [0; KEY_LENGTH];
 
-    scrypt(password, salt, &scrypt_params, &mut digest);
+    if let Ok(scrypt_params) = scrypt::Params::new(32768_f64.log(2.0) as u8, 8_u32, 2_u32) {
+        if let Err(e) = scrypt::scrypt(password, salt, &scrypt_params, &mut digest) {
+            eprintln!("{}", e)
+        }
+    }
 
     digest
 }

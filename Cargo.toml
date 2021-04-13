@@ -46,13 +46,13 @@ codegen-units = 1
 panic = 'abort'
 
 [dependencies]
-argon2rs = "0.2"
-bcrypt = "0.1"
-clap = "2"
-rpassword = "1.0"
-ring = "0.11"
-ring-pwhash = "0.11"
-rustyline = "1.0"
+argon2rs = "0.2.5"
+bcrypt = "0.9.0"
+clap = "2.33.3"
+rpassword = "5.0.1"
+ring = "0.16.20"
+scrypt="0.6.5"
+rustyline = "8.0.0"
 
 [badges]
 travis-ci = { repository = "lispyclouds/mpw-rs" }

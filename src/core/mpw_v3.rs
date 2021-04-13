@@ -17,7 +17,7 @@ extern crate ring;
  * along with Master Password. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use self::ring::{digest, hmac};
+use self::ring::hmac;
 use common;
 use common::{SiteVariant, SiteType};
 
@@ -63,7 +63,7 @@ pub fn password_for_site(master_key: &[u8; common::KEY_LENGTH],
             input.extend_from_slice(site_context.as_bytes());
         }
 
-        let signing_key = hmac::SigningKey::new(&digest::SHA256, master_key);
+        let signing_key = hmac::Key::new(hmac::HMAC_SHA256, master_key);
         let output = hmac::sign(&signing_key, input.as_slice());
         let site_password_seed = output.as_ref();
 
